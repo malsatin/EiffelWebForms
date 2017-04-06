@@ -1,24 +1,34 @@
 note
-	description: "WebForms application root class"
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Server starter"
 
 class
 	APPLICATION
 
 inherit
-	ARGUMENTS
+	WSF_DEFAULT_SERVICE[APPLICATION_EXECUTION]
+		redefine
+			initialize
+		end
 
 create
-	make
+	make_and_launch
+
+feature {NONE} -- Configuration
+
+	default_port: INTEGER = 80
+			-- Port number
 
 feature {NONE} -- Initialization
 
-	make
-			-- Run application.
+	initialize
+			-- Initialises current service
 		do
-			--| Add your code here
-			print ("Hello Eiffel World!%N")
+	 		set_service_option ("port", default_port)
+	 		set_service_option ("verbose", true)
+
+			import_service_options (create {WSF_SERVICE_LAUNCHER_OPTIONS_FROM_INI}.make_from_file ("server.ini"))
+
+			Precursor
 		end
 
 end
