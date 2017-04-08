@@ -14,7 +14,8 @@ inherit
 			initialize
 		end
 
-	WSF_URI_TEMPLATE_HELPER_FOR_ROUTED_EXECUTION
+	WSF_ROUTED_URI_TEMPLATE_HELPER
+	WSF_ROUTED_URI_HELPER
 
 create
 	make
@@ -33,8 +34,6 @@ feature {NONE} -- Initialization
 		-- Setup `router'
 			local
 				assets_files: WSF_FILE_SYSTEM_HANDLER
-				common_files: WSF_FILE_SYSTEM_HANDLER
-				--doc: WSF_ROUTER_SELF_DOCUMENTATION_HANDLER
 			do
 				--create doc.make (router)
 				--router.handle ("/api/doc", doc, router.methods_GET)
@@ -46,8 +45,16 @@ feature {NONE} -- Initialization
 				create assets_files.make_hidden ("www/assets")
 				router.handle ("/asset/", assets_files, router.methods_GET)
 
-				create common_files.make_hidden ("www")
-				common_files.set_directory_index (<<"home.html">>)
-				router.handle ("", common_files, router.methods_GET)
+				map_uri_agent("/", agent handle_main, router.methods_GET);
 			end
+
+	handle_main (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			pg: WSF_PAGE_RESPONSE
+		do
+			create pg.make_with_body (req.path_info)
+			
+			res.send (pg)
+		end
+
 end
