@@ -1,7 +1,9 @@
 INSTALLATION
 ------------
 
-Run webforms.ecf in EiffelStudio later than 17.1. Give in a moment to compile. Run application
+ - Run webforms.ecf in EiffelStudio later than 17.1.
+ - Give in a moment to compile.
+ - Run application.
 
 ACCESS
 ------------
