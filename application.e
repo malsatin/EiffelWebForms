@@ -25,8 +25,9 @@ feature {NONE} -- Initialization
 		do
 	 		set_service_option ("port", default_port)
 	 		set_service_option ("verbose", true)
+	 		set_service_option ("force_single_threaded", true)
 
-			import_service_options (create {WSF_SERVICE_LAUNCHER_OPTIONS_FROM_INI}.make_from_file ("server.ini"))
+			import_service_options (create {WSF_SERVICE_LAUNCHER_OPTIONS_FROM_INI}.make_from_file ("stuff/server.ini"))
 
 			Precursor
 		end

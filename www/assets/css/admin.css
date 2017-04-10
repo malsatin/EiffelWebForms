@@ -1,12 +1,19 @@
-
-ul.topmenu {
-    margin: 0; 
-    padding: 4px;
-    list-style: none;
+.navbar {
+  border-radius: 0;
 }
 
-ul.topmenu li {
-    float: left;
-    margin-right: 5px; 
-    padding: 3px; 
+.section {
+  padding-top: 15px;
+}
+
+.publications-table{
+  margin: 35px 0 0;
+}
+
+.select-unit{
+  width: 350px;
+}
+
+.btn-default {
+  margin: 7px 0 0;
 }
