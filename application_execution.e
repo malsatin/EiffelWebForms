@@ -56,17 +56,11 @@ feature {NONE}
 			local
 				assets_files: WSF_FILE_SYSTEM_HANDLER
 			do
-				--create doc.make (router)
-				--router.handle ("/api/doc", doc, router.methods_GET)
-				--map_uri_template_agent ("/api/message/time/now", agent handle_time_now_utc, router.methods_GET)
-				--map_uri_template_agent ("/api/message/hover/{name}", agent handle_hover_message, router.methods_GET)
-				--map_uri_template_agent ("/api/session/{session}/item/{name}", agent handle_interface_id_set_value, router.methods_POST)
-				--map_uri_template_agent ("/api/session/{session}/item/{name}", agent handle_interface_id_get_text, router.methods_GET)
-				--map_uri_template_agent ("/api/{operation}", agent handle_api, router.all_allowed_methods)
-
+				-- Files handler
 				create assets_files.make_hidden ("www/assets")
 				router.handle ("/assets/", assets_files, router.methods_GET)
 
+				-- Pages routes
 				map_uri_agent("/", agent c_report.handle_main, router.methods_GET);
 				map_uri_agent("/report/", agent c_report.handle_main, router.methods_GET);
 				map_uri_agent("/report/main", agent c_report.handle_main, router.methods_GET);
@@ -77,6 +71,8 @@ feature {NONE}
 
 				map_uri_agent("/admin/login", agent c_admin.handle_login, router.methods_GET);
 				map_uri_template_agent("/admin/{page}", agent c_admin.handle_page, router.methods_GET);
+
+				map_uri_agent("/api/test", agent c_api.handle_test, router.methods_get_post);
 			end
 
 end

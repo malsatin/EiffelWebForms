@@ -101,21 +101,41 @@ feature
 			file.close
 		end
 
-	jsonEncode(data: HASH_TABLE[ANY, STRING]): STRING
+	jsonEncode(data: HASH_TABLE[ANY, HASHABLE]): STRING
 		local
-			serializer: TABLE_ITERABLE_JSON_SERIALIZER[ANY, STRING]
-			context: JSON_SERIALIZER_CONTEXT
+			serializer: JSON_HASH_TABLE_CONVERTER
 		do
-			create serializer
-			create context.default_create
+			create serializer.make
+			create Result.make_empty
 
-			Result := serializer.to_json(data, context).representation
+			if attached serializer.to_json(data) as converted then
+				Result := converted.representation
+			else
+				Result := "{%"status%": %"error%", %"msg%": %"JSON serialization error%"}"
+			end
+		ensure
+			Result /= Void
+		end
+
+	convertPostData(req: WSF_REQUEST): HASH_TABLE[ANY, HASHABLE]
+		local
+			field: WSF_VALUE
+		do
+			create Result.make (2)
+
+			across
+				req.form_parameters as param
+			loop
+				field := param.item
+
+				Result.put(field.string_representation, field.name)
+			end
 		end
 
 feature
 	-- Features
 
-	renderHtml(path: STRING; opts: detachable HASH_TABLE[ANY, STRING]): STRING
+	renderHtml(path: STRING; opts: detachable HASH_TABLE[ANY, HASHABLE]): STRING
 		require
 			path_not_void: path /= Void
 		local
@@ -130,7 +150,7 @@ feature
 			Result.replace_substring_all ("{{insert_content}}", content_html)
 		end
 
-	renderJson(data: HASH_TABLE[ANY, STRING]): STRING
+	renderJson(data: HASH_TABLE[ANY, HASHABLE]): STRING
 		require
 			not_void: data /= Void
 		do

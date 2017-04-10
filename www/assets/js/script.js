@@ -76,10 +76,12 @@ function generate(type, message, options) {
 
 var apiBaseUrl = '/api/';
 
-$.ajaxSetup({
-    type: 'POST',
-    dataType: 'json'
-})
-.fail(function() {
-    generate("error", "Can't connect with server");
+$(function() {
+    $.ajaxSetup({
+        type: 'POST',
+        dataType: 'json',
+        error: function() {
+            generate("error", "Can't connect with server");
+        }
+    });
 });
