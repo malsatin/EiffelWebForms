@@ -5,8 +5,10 @@ This is not very good clone of [Google Forms](https://docs.google.com/forms/d/e/
 ## Installation
 
  - Run webforms.ecf in EiffelStudio later than 17.1.
- - Give in a moment to compile.
+ - Give it a moment to compile.
  - Run application.
+ - ..
+ - Or just run webforms.exe
 
 ## Access
 
