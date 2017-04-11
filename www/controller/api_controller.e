@@ -25,37 +25,91 @@ feature {NONE}
 		end
 
 feature
+	-- Helpers
+
+	is_date_valid(date: STRING): BOOLEAN
+		do
+			Result := true
+		end
+
+feature
 	-- Handlers
 
-	handle_test (req: WSF_REQUEST; res: WSF_RESPONSE)
+	handle_save_report (req: WSF_REQUEST; res: WSF_RESPONSE)
 		local
 			resp: HASH_TABLE[ANY, STRING]
 			data: HASH_TABLE[ANY, STRING]
-			query_params: HASH_TABLE [ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+			tmp: STRING
 			new_id: INTEGER
 		do
 			create resp.make (2)
 			data := convertPostData(req)
 
-			create query_params.make (2)
+			create sql_params.make (10)
+			create tmp.make_empty
 
-			if NOT (data.has ("name") OR data.has ("pass")) then
-				resp["status"] := "error"
-				resp["msg"] := "lack of params"
+			if attached data["unit_name"] as unit_name and
+				then attached data["unit_head"] as unit_head and
+				then attached data["courses"] as courses and
+				then attached data["examinations"] as examinations and
+				then attached data["students_supervised"] as students_supervised and
+				then attached data["students_reports"] as students_reports and
+				then attached data["grants"] as grants and
+				then attached data["projects"] as projects then
 
-				output(res, renderJson(resp))
-			else
-				if attached data.at ("name") AS name then
-					query_params["admin_name"] := name.out
+				sql_params["unit_name"] := unit_name.out
+				sql_params["unit_head"] := unit_head.out
+				sql_params["publications"] := ""
+				sql_params["supervised_number"] := (students_supervised.out.occurrences (("%N").at(1)) + 1).out
+				sql_params["collab_number"] := "0"
+				sql_params["patents"] := ""
+				sql_params["students_reports"] := students_reports.out
+				sql_params["all_data"] := jsonEncode (data)
+				sql_params["date_from"] := "2017-01-01"
+				sql_params["date_to"] := "2017-12-31"
+
+				if attached data["conference_pubs"] as pub1 then
+					tmp := tmp + pub1.out
 				end
-				if attached data.at ("pass") AS pass then
-					query_params["admin_pass"] := pass.out
+
+				if attached data["journal_pubs"] as pub2 then
+					tmp := tmp + "%N" + pub2.out
 				end
 
-				new_id := db.insert (db.query_escape ("INSERT INTO admins (name, password) VALUES({{admin_name}}, {{admin_pass}})", query_params))
+				sql_params["publications"] := tmp
+
+				if attached data["research_collab"] as research_collab then
+					sql_params["collab_number"] := (research_collab.out.occurrences (("%N").at(1)) + 1).out
+				end
+
+				if attached data["patents"] as patents then
+					sql_params["patents"] := patents.out
+				end
+
+				if attached data["date_from"] as date_from and then is_date_valid(date_from.out) then
+					sql_params["date_from"] := date_from.out
+				end
+				
+				if attached data["date_to"] as date_to and then is_date_valid(date_to.out) then
+					sql_params["date_to"] := date_to.out
+				end
+
+				tmp := "[
+					INSERT INTO reports (
+						unit_name, unit_head, publications, supervised_students_number, research_collaborations_number, patents, students_reports, all_data, date_from, date_to
+					) VALUES(
+						{{unit_name}}, {{unit_head}}, {{publications}}, {{supervised_number}}, {{collab_number}}, {{patents}}, {{students_reports}}, {{all_data}}, {{date_from}}, {{date_to}}
+					)
+				]"
+				new_id := db.insert (db.query_escape (tmp, sql_params))
 
 				resp["status"] := "success"
-				resp["msg"] := "user added"
+				resp["msg"] := "Your report has been saved"
+				output(res, renderJson(resp))
+			else
+				resp["status"] := "error"
+				resp["msg"] := "One of required fields is not filled"
 				output(res, renderJson(resp))
 			end
 		end

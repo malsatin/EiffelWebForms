@@ -65,7 +65,7 @@ feature {NONE}
 				map_uri_agent("/admin/login", agent c_admin.handle_login, router.methods_GET);
 				map_uri_template_agent("/admin/{page}", agent c_admin.handle_page, router.methods_GET);
 
-				map_uri_agent("/api/test", agent c_api.handle_test, router.methods_get_post);
+				map_uri_agent("/api/save-report", agent c_api.handle_save_report, router.methods_get_post);
 			end
 
 end
