@@ -25,7 +25,7 @@ feature
 
 	open(db_file_path: STRING)
 		do
-			make_open_read_write ("stuff/webforms.db")
+			make_open_read_write (db_file_path)
 
 			if has_error then
 				if attached last_exception AS exception then
