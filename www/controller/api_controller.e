@@ -119,7 +119,7 @@ feature
 			resp: HASH_TABLE[ANY, STRING]
 			data: HASH_TABLE[ANY, STRING]
 			sql_params: HASH_TABLE [ANY, STRING]
-			db_data: ARRAY[HASH_TABLE[STRING, STRING]]
+			db_data: ARRAY[ARRAY[STRING]]
 		do
 			create resp.make (2)
 			data := convertPostData(req)
@@ -127,7 +127,6 @@ feature
 			create sql_params.make (2)
 
 			if attached data["year"] as select_year then
-				Io.put_string (select_year.out + "%N")
 				sql_params["year"] := select_year.out
 				sql_params["next_year"] := (select_year.out.to_integer_32 + 1).out
 
@@ -148,11 +147,17 @@ feature
 			resp: HASH_TABLE[ANY, STRING]
 			data: HASH_TABLE[ANY, STRING]
 			sql_params: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY[ARRAY[STRING]]
 		do
 			create resp.make (2)
 			data := convertPostData(req)
 
-			create sql_params.make (2)
+			create sql_params.make (0)
+			db_data := db.select_all (db.query_escape ("SELECT unit_name FROM reports WHERE unit_name != '' GROUP BY unit_name", sql_params))
+
+			resp["status"] := "success"
+			resp["msg"] := db_data
+			output(res, renderJson(resp))
 		end
 
 	handle_unit_info (req: WSF_REQUEST; res: WSF_RESPONSE)
@@ -160,11 +165,26 @@ feature
 			resp: HASH_TABLE[ANY, STRING]
 			data: HASH_TABLE[ANY, STRING]
 			sql_params: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY[ARRAY[STRING]]
+			sql: STRING
 		do
 			create resp.make (2)
 			data := convertPostData(req)
 
-			create sql_params.make (2)
+			create sql_params.make (1)
+			if attached data["name"] as unit then
+				sql_params["u_name"] := unit.out
+
+				db_data := db.select_all (db.query_escape ("SELECT supervised_students_number, date_from, date_to, all_data FROM reports WHERE unit_name = {{u_name}} ORDER BY id DESC LIMIT 1", sql_params))
+
+				resp["status"] := "success"
+				resp["msg"] := db_data
+				output(res, renderJson(resp))
+			else
+				resp["status"] := "error"
+				resp["msg"] := "Unit field is not filled"
+				output(res, renderJson(resp))
+			end
 		end
 
 	handle_lab_courses (req: WSF_REQUEST; res: WSF_RESPONSE)
