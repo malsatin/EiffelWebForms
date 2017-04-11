@@ -8,7 +8,9 @@ This is not very good clone of [Google Forms](https://docs.google.com/forms/d/e/
  - Give it a moment to compile.
  - Run application.
  - ..
- - Or just run webforms.exe
+ - Or just run webforms.exe in the project root folder
+ - NOTE: application wouldn't work if it is not in the same folder as folder 'stuff/' does
+ - P.S. I don't know, does it require installed SQLite on your PC. So if application doesn't work it can be one of the reasins, why
 
 ## Access
 

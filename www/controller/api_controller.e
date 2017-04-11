@@ -90,7 +90,7 @@ feature
 				if attached data["date_from"] as date_from and then is_date_valid(date_from.out) then
 					sql_params["date_from"] := date_from.out
 				end
-				
+
 				if attached data["date_to"] as date_to and then is_date_valid(date_to.out) then
 					sql_params["date_to"] := date_to.out
 				end
@@ -112,6 +112,71 @@ feature
 				resp["msg"] := "One of required fields is not filled"
 				output(res, renderJson(resp))
 			end
+		end
+
+	handle_get_publications (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE[ANY, STRING]
+			data: HASH_TABLE[ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY[HASH_TABLE[STRING, STRING]]
+		do
+			create resp.make (2)
+			data := convertPostData(req)
+
+			create sql_params.make (2)
+
+			if attached data["year"] as select_year then
+				Io.put_string (select_year.out + "%N")
+				sql_params["year"] := select_year.out
+				sql_params["next_year"] := (select_year.out.to_integer_32 + 1).out
+
+				db_data := db.select_all (db.query_escape ("SELECT unit_name, publications FROM reports WHERE publications != '' AND date_from >= {{year}} AND date_to <= {{next_year}}", sql_params))
+
+				resp["status"] := "success"
+				resp["msg"] := db_data
+				output(res, renderJson(resp))
+			else
+				resp["status"] := "error"
+				resp["msg"] := "Year field is not filled"
+				output(res, renderJson(resp))
+			end
+		end
+
+	handle_get_units (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE[ANY, STRING]
+			data: HASH_TABLE[ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+		do
+			create resp.make (2)
+			data := convertPostData(req)
+
+			create sql_params.make (2)
+		end
+
+	handle_unit_info (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE[ANY, STRING]
+			data: HASH_TABLE[ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+		do
+			create resp.make (2)
+			data := convertPostData(req)
+
+			create sql_params.make (2)
+		end
+
+	handle_lab_courses (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE[ANY, STRING]
+			data: HASH_TABLE[ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+		do
+			create resp.make (2)
+			data := convertPostData(req)
+
+			create sql_params.make (2)
 		end
 
 end

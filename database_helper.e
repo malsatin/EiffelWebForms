@@ -68,22 +68,45 @@ feature
 			end
 		end
 
-	select_all(sql: STRING): SQLITE_STATEMENT_ITERATION_CURSOR
+	select_all(sql: STRING): ARRAY[HASH_TABLE[STRING, STRING]]
 		local
 			db_query_statement: SQLITE_STATEMENT
 			query_result_cursor: SQLITE_STATEMENT_ITERATION_CURSOR
+			item: SQLITE_RESULT_ROW
+			row_data: HASH_TABLE[STRING, STRING]
+			i: NATURAL_32
 		do
+			create Result.make_empty
 			create db_query_statement.make (prepare_sql(sql), Current)
 
 			query_result_cursor := db_query_statement.execute_new
 			query_result_cursor.start
 
-			Result := query_result_cursor
+			across
+					query_result_cursor as row
+				loop
+					item := row.item
+
+					create row_data.make (item.count.as_integer_8)
+
+					from
+					    i := 1
+					until
+					    i > item.count
+					loop
+						row_data[(i - 1).out] := item.string_value(i)
+						--Io.put_string (i.out + ": " + item.column_name (i).out+ " -> " + item.string_value(i) + "%N")
+
+					    i := i + 1
+					end
+
+					Result.force (row_data, Result.upper + 1)
+				end
 		end
 
-	select_one(sql: STRING): SQLITE_RESULT_ROW
+	select_one(sql: STRING): HASH_TABLE[STRING, STRING]
 		do
-			Result := select_all(sql).item
+			Result := select_all(sql).at (0)
 		end
 
 	insert(sql: STRING): INTEGER

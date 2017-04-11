@@ -66,6 +66,10 @@ feature {NONE}
 				map_uri_template_agent("/admin/{page}", agent c_admin.handle_page, router.methods_GET);
 
 				map_uri_agent("/api/save-report", agent c_api.handle_save_report, router.methods_get_post);
+				map_uri_agent("/api/get-publications", agent c_api.handle_get_publications, router.methods_get_post);
+				map_uri_agent("/api/get-units", agent c_api.handle_get_units, router.methods_get_post);
+				map_uri_agent("/api/unit-info", agent c_api.handle_unit_info, router.methods_get_post);
+				map_uri_agent("/api/lab-courses", agent c_api.handle_lab_courses, router.methods_get_post);
 			end
 
 end
