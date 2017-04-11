@@ -2,19 +2,21 @@
 <h4 class="section-header">Section 7: other information</h4>
 <p>This section covers anything not included in previous sections.</p>
 
-<form>
-	<h4 class="question">Other relevant information</h4>
-	<p>Add any information on your unit's achievements that is not covered by the previous sections.</p>
-	<textarea class="form-control" placeholder="Your answer"></textarea>
+<form class="report-form">
+	<div class="form-group">
+		<h4 class="question">Other relevant information</h4>
+		<p>Add any information on your unit's achievements that is not covered by the previous sections.</p>
+		<textarea class="form-control" placeholder="Other information" name="other_info"></textarea>
+	</div>
 </form>
 
 <table align="center">
 	<tr>
 		<td>
-			<button type="button" class="btn btn-primary main-btn" onclick="location.href='/report/section/6'">Back</button>
+			<button type="button" class="btn btn-primary main-btn btn-prev" data-href="/report/section/5">Back</button>
 		</td>
 		<td>
-			<button type="button" class="btn btn-success main-btn" onclick="location.href='/report/final'">Finish</button>
+			<button type="button" class="btn btn-success main-btn btn-final" data-href="/report/final">Submit</button>
 		</td>
 	</tr>
 </table>

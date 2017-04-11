@@ -10,7 +10,7 @@ deferred class
 feature
 	-- Handlers
 
-	db: SQLITE_DATABASE
+	db: DATABASE_HELPER
 
 feature
 	-- Access
@@ -26,7 +26,7 @@ feature {NONE}
 feature {NONE}
 	-- Creation
 
-	make(db_conn: SQLITE_DATABASE)
+	make(db_conn: DATABASE_HELPER)
 		require
 			db_con_exists: db_conn /= Void
 			db_avaliable: NOT db_conn.is_closed AND db_conn.is_accessible
@@ -117,7 +117,7 @@ feature
 			Result /= Void
 		end
 
-	convertPostData(req: WSF_REQUEST): HASH_TABLE[ANY, HASHABLE]
+	convertPostData(req: WSF_REQUEST): HASH_TABLE[ANY, STRING]
 		local
 			field: WSF_VALUE
 		do

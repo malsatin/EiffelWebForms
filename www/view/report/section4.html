@@ -2,23 +2,27 @@
 <h4 class="section-header">Section 4: technology transfer</h4>
 <p>This section covers patents, licenses and other technology transfer activities</p>
 
-<form>
-	<h4 class="question">Patents</h4>
-	<p>List patents filed or otherwise submitted during the reported period. Indicate country of patent office.</p>
-	<textarea class="form-control" placeholder="Your answer"></textarea>
+<form class="report-form">
+	<div class="form-group">
+		<h4 class="question">Patents</h4>
+		<p>List patents filed or otherwise submitted during the reported period. Indicate country of patent office.</p>
+		<textarea class="form-control" placeholder="Patents" name="patents"></textarea>
+	</div>
 
-	<h4 class="question">IP licensing (software or others)</h4>
-	<p>List licenses granted.</p>
-	<textarea class="form-control" placeholder="Your answer"></textarea>
+	<div class="form-group">
+		<h4 class="question">IP licensing (software or others)</h4>
+		<p>List licenses granted.</p>
+		<textarea class="form-control" placeholder="IP licensing" name="ip_licensing"></textarea>
+	</div>
 </form>
 
 <table align="center">
 	<tr>
-		<td>
-			<button type="button" class="btn btn-primary main-btn" onclick="location.href='/report/section/3'">Back</button>
+				<td>
+			<button type="button" class="btn btn-primary main-btn btn-prev" data-href="/report/section/3">Back</button>
 		</td>
 		<td>
-			<button type="button" class="btn btn-primary main-btn" onclick="location.href='/report/section/5'">Next</button>
+			<button type="button" class="btn btn-primary main-btn btn-next" data-href="/report/section/5">Next</button>
 		</td>
 	</tr>
 </table>

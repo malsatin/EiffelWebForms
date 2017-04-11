@@ -1,28 +1,36 @@
 <h1 align="center">Innopolis University: unit annual report, 2017</h1>
 <h4 class="section-header">Section 1: general</h5>
 
-<form>
-	<h4 class="question">Name of unit *</h4>
-	<p>Official name, for example laboratory name</p>
-	<input class="form-control" placeholder="Your answer" required="required">
+<form class="report-form">
+	<div class="form-group required">
+		<h4 class="question">Name of unit</h4>
+		<p>Official name, for example laboratory name</p>
+		<input class="form-control" placeholder="Unit name" name="unit_name" required>
+	</div>
 
-	<h4>Name of head of unit *</h4>
-	<input class="form-control" placeholder="Your answer" required="required">
+	<div class="form-group required">
+		<h4>Name of head of unit</h4>
+		<input class="form-control" placeholder="Unit head" name="unit_head" required>
+	</div>
 
-	<h4>Start of reporting period (if other than 1.1.2017)</h4> 
-	<input class="form-control" type="date" name="calendar">
+	<div class="form-group">
+		<h4>Start of reporting period (if other than 1.1.2017)</h4> 
+		<input class="form-control" type="date" name="date_from">
+	</div>
 
-	<h4>End of reporting period (if other than 31.12.2017)</h4>
-	<input class="form-control" type="date" name="calendar">
+	<div class="form-group">
+		<h4>End of reporting period (if other than 31.12.2017)</h4>
+		<input class="form-control" type="date" name="date_to">
+	</div>
 </form>
 
 <table align="center">
 	<tr>
 		<td>
-			<button type="button" class="btn btn-primary main-btn" onclick="location.href='/report/'">Back</button>
+			<button type="button" class="btn btn-primary main-btn btn-prev" data-href="/report/">Back</button>
 		</td>
 		<td>
-			<button type="button" class="btn btn-primary main-btn" onclick="location.href='/report/section/2'">Next</button>
+			<button type="button" class="btn btn-primary main-btn btn-next" data-href="/report/section/2">Next</button>
 		</td>
 	</tr>
 </table>

@@ -23,7 +23,7 @@ create
 feature
 	-- Common
 
-	db_conn: SQLITE_DATABASE
+	db: DATABASE_HELPER
 
 	c_admin: ADMIN_CONTROLLER
 	c_api: API_CONTROLLER
@@ -35,18 +35,11 @@ feature {NONE}
 	initialize
 			-- Initialize current service.
 		do
-			create db_conn.make_open_read_write ("stuff/webforms.db")
-			if db_conn.has_error then
-				if attached db_conn.last_exception AS exception then
-					Io.put_string ("DB error #" + exception.extended_code.out)
-				else
-					Io.put_string ("Undefined DB error")
-				end
-			end
+			create db.my_make ("stuff/webforms.db")
 
-			create c_admin.make (db_conn)
-			create c_api.make (db_conn)
-			create c_report.make (db_conn)
+			create c_admin.make (db)
+			create c_api.make (db)
+			create c_report.make (db)
 
 			Precursor
 		end
