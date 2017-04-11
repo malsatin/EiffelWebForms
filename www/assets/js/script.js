@@ -30,6 +30,12 @@ function generate(type, message, options) {
 	return n.options.id;
 }
 
+function ucfirst(str) {
+	var f = str.charAt(0).toUpperCase();
+
+	return f + str.substr(1, str.length-1);
+}
+
 /*function noty_test() {
 	generate('alert', 'alert');
 	generate('success', '<b>success</b>');

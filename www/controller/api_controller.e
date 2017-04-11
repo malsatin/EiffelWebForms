@@ -58,9 +58,10 @@ feature
 				then attached data["grants"] as grants and
 				then attached data["projects"] as projects then
 
-				sql_params["unit_name"] := unit_name.out
+				sql_params["unit_name"] := unit_name.out.to_lower
 				sql_params["unit_head"] := unit_head.out
 				sql_params["publications"] := ""
+				sql_params["courses"] := courses
 				sql_params["supervised_number"] := (students_supervised.out.occurrences (("%N").at(1)) + 1).out
 				sql_params["collab_number"] := "0"
 				sql_params["patents"] := ""
@@ -97,9 +98,9 @@ feature
 
 				tmp := "[
 					INSERT INTO reports (
-						unit_name, unit_head, publications, supervised_students_number, research_collaborations_number, patents, students_reports, all_data, date_from, date_to
+						unit_name, unit_head, publications, courses, supervised_students_number, research_collaborations_number, patents, students_reports, all_data, date_from, date_to
 					) VALUES(
-						{{unit_name}}, {{unit_head}}, {{publications}}, {{supervised_number}}, {{collab_number}}, {{patents}}, {{students_reports}}, {{all_data}}, {{date_from}}, {{date_to}}
+						{{unit_name}}, {{unit_head}}, {{publications}}, {{courses}}, {{supervised_number}}, {{collab_number}}, {{patents}}, {{students_reports}}, {{all_data}}, {{date_from}}, {{date_to}}
 					)
 				]"
 				new_id := db.insert (db.query_escape (tmp, sql_params))
@@ -166,7 +167,6 @@ feature
 			data: HASH_TABLE[ANY, STRING]
 			sql_params: HASH_TABLE [ANY, STRING]
 			db_data: ARRAY[ARRAY[STRING]]
-			sql: STRING
 		do
 			create resp.make (2)
 			data := convertPostData(req)
@@ -192,11 +192,33 @@ feature
 			resp: HASH_TABLE[ANY, STRING]
 			data: HASH_TABLE[ANY, STRING]
 			sql_params: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY[ARRAY[STRING]]
 		do
 			create resp.make (2)
 			data := convertPostData(req)
 
-			create sql_params.make (2)
+			create sql_params.make (3)
+
+			if attached data["name"] as unit and
+			then attached data["from"] as d_from and
+			then attached data["to"] as d_to then
+
+				sql_params["name"] := unit.out
+				sql_params["from"] := d_from.out
+				sql_params["to"] := d_to.out
+
+				Io.put_string (d_from.out + "%N")
+				Io.put_string ( d_to.out + "%N")
+				db_data := db.select_all (db.query_escape ("SELECT courses FROM reports WHERE unit_name = {{name}} AND courses != '' AND date_from >= {{from}} AND date_to <= {{to}}", sql_params))
+
+				resp["status"] := "success"
+				resp["msg"] := db_data
+				output(res, renderJson(resp))
+			else
+				resp["status"] := "error"
+				resp["msg"] := "All field must be filled"
+				output(res, renderJson(resp))
+			end
 		end
 
 end

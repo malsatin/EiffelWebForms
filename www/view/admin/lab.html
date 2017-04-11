@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-datepicker.min.css">
+<script type="text/javascript" src="/assets/js/bootstrap.datepicker.min.js"></script>
 <script type="text/javascript" src="/assets/js/workers/admin/lab-courses.js"></script>
 
 <h1 align="center">Courses tought by a given laboratory</h1> 
@@ -10,15 +12,25 @@
 		</div>
 		<div class="form-group">
 			<label for="dateFrom">From date</label>
-			<input class="form-control" type="date">
+			<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+				<input class="form-control date_from">
+				<div class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="dateFrom">To date</label>
-			<input class="form-control" type="date">
+			<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+				<input class="form-control date_to">
+				<div class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</div>
+			</div>
 		</div>
-		<button type="button" class="btn btn-primary btn-default pull-right">Search</button>
+		<button type="button" class="btn btn-primary btn-default pull-right search-btn">Search</button>
 	</form>
-	<table class="table table-hover publications-table">
+	<table class="table table-hover courses-table">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -26,14 +38,6 @@
 			</tr> 
 		</thead>
 		<tbody>
-			<tr>
-				<td>-</td>
-				<td>-</td>
-			</tr>
-			<tr>
-				<td>-</td>
-				<td>-</td>
-			</tr>
 			<tr>
 				<td>-</td>
 				<td>-</td>

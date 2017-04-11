@@ -1,11 +1,5 @@
 $(function() {
 
-	function ucfirst(str) {
-		var f = str.charAt(0).toUpperCase();
-
-		return f + str.substr(1, str.length-1);
-	}
-
 	$.ajax({
 		url: apiBaseUrl + 'get-units',
 		success: function(data) {

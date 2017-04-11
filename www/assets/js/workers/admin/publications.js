@@ -19,7 +19,9 @@ $(function() {
 							var pubs = data.msg[i][1].split("\n");
 							
 							for(var j = 0; j < pubs.length; j++) {
-								tbody.append('<tr><td>' + (++iter) + '</td><td>' + unit + '</td><td>' + pubs[j] + '</td></tr>');
+								if(pubs[j].length > 0) {
+									tbody.append('<tr><td>' + (++iter) + '</td><td>' + unit + '</td><td>' + pubs[j] + '</td></tr>');
+								}
 							}
 						}
 					} else {
