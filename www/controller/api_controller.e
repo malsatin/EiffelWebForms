@@ -58,7 +58,9 @@ feature
 				then attached data["grants"] as grants and
 				then attached data["projects"] as projects then
 
-				sql_params["unit_name"] := unit_name.out.to_lower
+				tmp := unit_name.out
+				tmp.to_lower
+				sql_params["unit_name"] := tmp
 				sql_params["unit_head"] := unit_head.out
 				sql_params["publications"] := ""
 				sql_params["courses"] := courses

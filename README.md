@@ -22,3 +22,9 @@ You can access webforms in browser, by address:
 
 	/report/main               Page to create a report
 	/admin/index               Admin site. There you can perform some queries
+
+## Authors
+ 
+ - Malyutkin Sergey
+ - Ansenina Anna
+ - Bogdan Parkhomin
