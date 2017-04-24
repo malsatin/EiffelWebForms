@@ -17,8 +17,15 @@ body {
    color: red;
 }
 
+.btn-start {
+	margin-top: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
 .main-btn {
 	display: block;
+	padding: 6.5px 17px;
 	margin: -5px 15px 0px;
 }
 
