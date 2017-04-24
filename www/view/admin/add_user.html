@@ -1,12 +1,29 @@
-<h1 align="center">Add new admin</h1> 
-<div class="col-xs-10 col-md-8 col-xs-offset-1 col-md-offset-2 section">
-	<form>
-		<h4>Login for new admin</h4>
-		<input class="form-control" placeholder="Login">
+<h1 align="center" class="page_title">Add new admin</h1>
+<hr/>
 
-		<h4>Password for new admin</h4>
-		<input class="form-control" placeholder="Pass">
-	</form>
+<form class="clearfix">
+	<div class="form-group col-md-6">
+		<h4>Login</h4>
+		<input class="form-control" name="u_login" placeholder="User login">
+	</div>
+	<div class="form-group col-md-6">
+		<h4>Password</h4>
+		<div class="input-group">
+			<input class="form-control" type="password" name="u_pass" placeholder="User pass">
+			<div class="input-group-addon show_pass">
+				<span class="glyphicon glyphicon glyphicon-eye-open"></span>
+			</div>
+		</div>
+		<br>
+		<div class="input-group">
+			<input class="form-control" type="password" name="u_pass" placeholder="Repeat user pass">
+			<div class="input-group-addon show_pass">
+				<span class="glyphicon glyphicon glyphicon-eye-open"></span>
+			</div>
+		</div>
+	</div>
 
-	<button type="button" class="btn btn-primary main-btn">Confirm</button>
-</div>
+	<div class="col-md-12" style="margin-top: 15px">
+		<button type="button" class="btn btn-primary btn-default confirm-btn col-md-2 pull-right">Create</button>
+	</div>
+</form>

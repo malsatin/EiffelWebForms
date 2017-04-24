@@ -15,37 +15,61 @@
 	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/assets/js/jquery.noty.packaged.min.js"></script>
 	<script type="text/javascript" src="/assets/js/script.js"></script>
+	<script type="text/javascript" src="/assets/js/workers/admin.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
+		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/admin/index">Admin site</a>
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 			</div>
-			<ul class="nav navbar-nav">
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-						Menu <span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="/admin/publications">Publications</a>
-						</li>
-						<li>
-							<a href="/admin/unit">Unit</a>
-						</li>
-						<li>
-							<a href="/admin/lab">Labaratory course</a>
-						</li>
-					</ul>
-				</li>
-				<!-- <li><a href="/admin/add_user">Add admin</a></li>
-				<li><a href="/admin/change_pass">Change password</a></li>
-				<li><a href="/admin/logout">Log out</a></li> -->
-			</ul>
+			<div class="navbar-collapse collapse" id="navbar-main" aria-expanded="false" style="height: 1px">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							Menu <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="/admin/publications">Publications</a>
+							</li>
+							<li>
+								<a href="/admin/unit">Unit info</a>
+							</li>
+							<li>
+								<a href="/admin/lab">Labaratory courses</a>
+							</li>
+						</ul>
+					</li>
+					<li><a href="/admin/add_user">Add admin</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							Hello, {{user_name}} <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="/admin/change_pass">Change password</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="/admin/logout">Log out</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 
-	{{insert_content}}
+	<div class="col-xs-10 col-md-8 col-xs-offset-1 col-md-offset-2 section">
+		{{insert_content}}
+	</div>
 </body>
 </html>

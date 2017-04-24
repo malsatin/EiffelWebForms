@@ -8,8 +8,8 @@ body {
 }
 
 .list-group-item .noty_message {
-    padding: 10px 16px !important;
-    text-align: left !important;
+	padding: 10px 16px !important;
+	text-align: left !important;
 }
 
 .form-group.required h4::after { 
@@ -25,7 +25,7 @@ body {
 .wrapper{
 	width: 100%;
 	min-height: 100%;
-    padding: 0 0 50px;
+	padding: 0 0 50px;
 }
 
 .header {
@@ -48,15 +48,15 @@ body {
 .section-header {
 	background: #9dbdf2; 
 	margin-top: 25px;
-    padding: 10px 25px; 
+	padding: 10px 25px; 
 }
 
 .section {
-    padding-top: 0.1px;
-    padding-bottom: 20px;
-    background: #fafafa;
-    border-radius: 1px;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.125);
+	padding-top: 0.1px;
+	padding-bottom: 20px;
+	background: #fafafa;
+	border-radius: 1px;
+	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.125);
 }
 
 .report-form {
@@ -77,14 +77,14 @@ body {
 
 .block {
 	width: 400px;
-    position: absolute;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-    padding-top: 0.1px;
-    padding-bottom: 20px;
-    outline: 2px solid #000;
-    background: #fafafa;
+	padding-top: 0.1px;
+	padding-bottom: 20px;
+	outline: 2px solid #000;
+	background: #fafafa;
 }
 
 .error-template {
@@ -93,10 +93,26 @@ body {
 }
 
 .error-actions {
-	margin-top:15px;
-	margin-bottom:15px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
 
 .error-actions .btn {
-	margin-right:10px;
+	margin-right: 10px;
+}
+
+.login-form .form-group {
+	margin-bottom: 20px;
+}
+
+.login-btn {
+	display: block;
+	position: relative;
+	margin-top: 15px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.input-group.date {
+	cursor: pointer;
 }

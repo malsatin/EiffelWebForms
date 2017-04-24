@@ -1,4 +1,23 @@
 <h1 align="center">Please sign in</h1>
-<input class="form-control" placeholder="Login">
-<input class="form-control" placeholder="Password">
-<button type="button" class="btn btn-primary main-btn">Sign in</button>
+<br>
+<form class="login-form col-md-8 col-md-offset-2">
+	<div class="form-group required">
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="glyphicon glyphicon-user"></i>
+			</span>
+			<input class="form-control" name="login" placeholder="Login" required>
+		</div>
+	</div>
+	<div class="form-group required">
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="glyphicon glyphicon-lock"></i>
+			</span>
+			<input class="form-control" type="password" name="pass" placeholder="Password" required>
+		</div>
+	</div>
+	<div class="col-md-10 col-md-offset-1">
+		<button type="button" class="btn btn-success login-btn col-md-8 col-md-offset-2">Sign in</button>
+	</div>
+</form>

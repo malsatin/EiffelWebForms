@@ -1,43 +1,44 @@
+<h1 align="center" class="page_title">Information about given unit</h1> 
+<hr/>
+
+<form class="form-inline">
+	<div class="form-group">
+		<label>Select unit &nbsp;</label>
+		<select class="form-control select-unit" disabled>
+			<option selected>Loading..</option>
+		</select>
+	</div>
+	<button type="button" class="btn btn-primary pull-right search-btn" disabled>Search</button>
+</form>
+
+<table class="table table-hover unit-table">
+	<thead>
+		<tr>
+			<th class="text-center unit_name" colspan="2">-</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th class="col-md-4">Head of unit</th>
+			<td class="unit_head">-</td>
+		</tr>
+		<tr>
+			<th class="col-md-4">Reporting period</th>
+			<td class="period">-</td>
+		</tr>
+		<tr>
+			<th class="col-md-4">Courses</th>
+			<td class="courses">-</td>
+		</tr>
+		<tr>
+			<th class="col-md-4">Examinations</th>
+			<td class="exams">-</td>
+		</tr>
+		<tr>
+			<th class="col-md-4">Students supervised</th>
+			<td class="students_cnt">-</td>
+		</tr>
+	</tbody>
+</table>
+
 <script type="text/javascript" src="/assets/js/workers/admin/unit.js"></script>
-
-<h1 align="center">Information about given unit</h1> 
-
-<div class="col-xs-10 col-md-8 col-xs-offset-1 col-md-offset-2 section">
-	<form class="form-inline">
-		<div class="form-group">
-			<label for="dateFrom">Select unit</label>
-			<select class="form-control select-unit"></select>
-		</div>
-		<button type="button" class="btn btn-primary pull-right search-btn">Search</button>
-	</form>
-
-	<table class="table table-hover unit-table">
-		<thead>
-			<tr>
-				<th class="text-center unit_name" colspan="2">Unit name</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th>Head of unit</th>
-				<td class="unit_head">-</td>
-			</tr>
-			<tr>
-				<th>Reporting period</th>
-				<td class="period">-</td>
-			</tr>
-			<tr>
-				<th>Courses</th>
-				<td class="courses">-</td>
-			</tr>
-			<tr>
-				<th>Examinations</th>
-				<td class="exams">-</td>
-			</tr>
-			<tr>
-				<th>Students supervised</th>
-				<td class="students_cnt">-</td>
-			</tr>
-		</tbody>
-	</table>
-</div>

@@ -1,10 +1,12 @@
 $(function() {
 
 	$('.search-btn').on('click', function() {
+		$('.search-btn, .selected-year').prop('disabled', true);
+
 		$.ajax({
 			url: apiBaseUrl + 'get-publications',
 			data: {
-				year: Number($('.year').val())
+				year: Number($('.selected-year').val())
 			},
 			success: function(data) {
 				if(data.status == 'success') {
@@ -20,7 +22,7 @@ $(function() {
 							
 							for(var j = 0; j < pubs.length; j++) {
 								if(pubs[j].length > 0) {
-									tbody.append('<tr><td>' + (++iter) + '</td><td>' + unit + '</td><td>' + pubs[j] + '</td></tr>');
+									tbody.append('<tr><td>' + (++iter) + '</td><td>' + escape(unit) + '</td><td>' + escape(pubs[j]) + '</td></tr>');
 								}
 							}
 						}
@@ -30,6 +32,9 @@ $(function() {
 				} else {
 					generate(data.status, data.msg);
 				}
+			},
+			complete: function() {
+				$('.search-btn, .selected-year').prop('disabled', false);
 			}
 		});
 	});

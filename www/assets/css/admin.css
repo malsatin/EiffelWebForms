@@ -1,19 +1,33 @@
 .navbar {
-  border-radius: 0;
+	border-radius: 0;
+}
+
+.page_title {
+	margin-top: 10px;
+}
+
+hr {
+	margin-bottom: 50px;
 }
 
 .section {
-  padding-top: 15px;
+	margin-top: 40px;
+	padding-top: 15px;
 }
 
 .publications-table{
-  margin: 35px 0 0;
+	margin: 35px 0 0;
 }
 
 .select-unit{
-  width: 350px;
+	padding-right: 50px;
 }
 
 .btn-default {
-  margin: 7px 0 0;
+	margin: 7px 0 0;
+}
+
+.search-btn {
+	padding-left: 25px;
+	padding-right: 25px;
 }
