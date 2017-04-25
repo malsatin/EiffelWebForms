@@ -11,6 +11,8 @@ feature
 	-- Handlers
 
 	db: DATABASE_HELPER
+	sess: SESSION_HELPER
+	json_h: JSON_HELPER
 
 feature
 	-- Access
@@ -26,12 +28,15 @@ feature {NONE}
 feature {NONE}
 	-- Creation
 
-	make(db_conn: DATABASE_HELPER)
+	make(db_conn: DATABASE_HELPER; sess_h: SESSION_HELPER)
 		require
 			db_con_exists: db_conn /= Void
 			db_avaliable: NOT db_conn.is_closed AND db_conn.is_accessible
 		do
 			db := db_conn
+			sess := sess_h
+
+			create json_h.default_create
 
 			create layout.make_empty
 			create content_type.make_empty
@@ -102,19 +107,8 @@ feature
 		end
 
 	jsonEncode(data: HASH_TABLE[ANY, HASHABLE]): STRING
-		local
-			serializer: JSON_HASH_TABLE_CONVERTER
 		do
-			create serializer.make
-			create Result.make_empty
-
-			if attached serializer.to_json(data) as converted then
-				Result := converted.representation
-			else
-				Result := "{%"status%": %"error%", %"msg%": %"JSON serialization error%"}"
-			end
-		ensure
-			Result /= Void
+			Result := json_h.encode(data)
 		end
 
 	convertPostData(req: WSF_REQUEST): HASH_TABLE[ANY, STRING]

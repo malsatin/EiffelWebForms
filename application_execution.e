@@ -26,6 +26,8 @@ feature
 
 	db: DATABASE_HELPER
 
+	sess: SESSION_HELPER
+
 	c_admin: ADMIN_CONTROLLER
 
 	c_api: API_CONTROLLER
@@ -39,9 +41,11 @@ feature {NONE}
 			-- Initialize current service.
 		do
 			create db.my_make ("stuff/webforms.db")
-			create c_admin.make (db)
-			create c_api.make (db)
-			create c_report.make (db)
+			create sess.make(db)
+
+			create c_admin.make (db, sess)
+			create c_api.make (db, sess)
+			create c_report.make (db, sess)
 
 			Precursor
 		end
@@ -76,7 +80,8 @@ feature {NONE}
 			map_uri_agent ("/api/res-collab-number", agent c_api.handle_res_collab_number, router.methods_get_post);
 			map_uri_agent ("/api/students-reports", agent c_api.handle_students_reports, router.methods_get_post);
 			map_uri_agent ("/api/unit-patents", agent c_api.handle_unit_patents, router.methods_get_post);
-			
+
+			map_uri_agent ("/api/user-login", agent c_api.handle_user_login, router.methods_get_post);
 			map_uri_agent ("/api/create-user", agent c_api.handle_create_user, router.methods_get_post);
 		end
 

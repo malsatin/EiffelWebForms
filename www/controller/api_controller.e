@@ -280,6 +280,47 @@ feature
 			end
 		end
 
+	handle_user_login (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE [ANY, STRING]
+			data: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY [ARRAY [STRING]]
+			sql_params: HASH_TABLE [ANY, STRING]
+			crypt: SHA256
+		do
+			if sess.is_logged_in(req) then
+				res.redirect_now ("/admin/index")
+			else
+				create resp.make (2)
+				data := convertPostData (req)
+				create sql_params.make (2)
+
+				create crypt.make
+
+				if attached data ["login"] as login and then attached data ["pass"] as pass then
+					sql_params["login"] := login.out
+					crypt.update_from_string ("salty" + pass.out + login.out + "sugar")
+					sql_params["pass_hash"] := crypt.digest_as_string
+
+					db_data := db.select_all (db.query_escape ("SELECT * FROM admins WHERE name = {{login}} AND password = {{pass_hash}}", sql_params))
+
+					if db_data.count > 0 then
+						resp ["status"] := "success"
+						resp ["msg"] := "Fuck yeah"
+						output (res, renderJson (resp))
+					else
+						resp ["status"] := "error"
+						resp ["msg"] := "Combination not found"
+						output (res, renderJson (resp))
+					end
+				else
+					resp ["status"] := "error"
+					resp ["msg"] := "All fields must be filled"
+					output (res, renderJson (resp))
+				end
+			end
+		end
+
 	handle_create_user (req: WSF_REQUEST; res: WSF_RESPONSE)
 		local
 			resp: HASH_TABLE [ANY, STRING]

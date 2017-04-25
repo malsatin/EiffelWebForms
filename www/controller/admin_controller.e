@@ -31,6 +31,10 @@ feature
 
 	handle_page (req: WSF_REQUEST; res: WSF_RESPONSE)
 		do
+			if sess.is_logged_in (req) then
+				Io.put_string ("123")
+			end
+			
 			if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
 				output (res, renderHtml (page.string_representation, Void))
 			else
