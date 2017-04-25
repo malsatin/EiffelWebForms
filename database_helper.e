@@ -104,6 +104,16 @@ feature
 				end
 		end
 
+	select_row(sql: STRING): ARRAY[STRING]
+		do
+			Result := select_all(sql)[1]
+		end
+
+	select_scalar(sql: STRING): STRING
+		do
+			Result := select_row(sql)[1]
+		end
+
 	insert(sql: STRING): INTEGER
 			-- Return inserted row id
 		local

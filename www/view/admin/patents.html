@@ -1,1 +1,48 @@
-patents.html
+<h1 align="center" class="page_title">Patents of a unit</h1> 
+<hr/>
+
+<form class="clearfix">
+	<div class="form-group">
+		<label>Select Laboratory</label>
+		<select class="form-control select-unit" disabled>
+			<option selected>Loading..</option>
+		</select>
+	</div>
+	<div class="form-group col-md-6" style="padding-left: 0">
+		<label>From date</label>
+		<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+			<input class="form-control date_from">
+			<div class="input-group-addon">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-md-6" style="padding-right: 0">
+		<label>To date</label>
+		<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+			<input class="form-control date_to">
+			<div class="input-group-addon">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</div>
+		</div>
+	</div>
+	<button type="button" class="btn btn-primary btn-default pull-right search-btn" disabled>Search</button>
+</form>
+<table class="table table-hover courses-table">
+	<thead>
+		<tr>
+			<th class="col-md-2">#</th>
+			<th class="col-md-10">Patents</th>
+		</tr> 
+	</thead>
+	<tbody>
+		<tr>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+	</tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-datepicker.min.css">
+<script type="text/javascript" src="/assets/js/bootstrap.datepicker.min.js"></script>
+<script type="text/javascript" src="/assets/js/workers/admin/patents.js"></script>

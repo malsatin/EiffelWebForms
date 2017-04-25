@@ -29,8 +29,6 @@ feature
 	-- Handlers
 
 	handle_page (req: WSF_REQUEST; res: WSF_RESPONSE)
-		local
-			defaultLayout: detachable STRING
 		do
 			if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
 				output(res, renderHtml(page.string_representation, Void))

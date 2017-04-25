@@ -1,1 +1,25 @@
-students_reports.html
+<h1 align="center" class="page_title">Students reports</h1> 
+<hr/>
+
+<form class="form-inline">
+	<div class="form-group">
+		<label>Choose a year &nbsp;</label>
+		<input type="number" class="form-control selected-year" value="2017" step="1">
+	</div>
+	<button type="button" class="btn btn-primary pull-right search-btn">Search</button>
+</form>
+
+<table class="table table-hover publications-table">
+	<thead>
+		<tr>
+			<th class="col-md-1">#</th>
+			<th class="col-md-4">Unit</th>
+			<th class="col-md-7">Reports</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td class="text-center" colspan="3">Loading ..</td></tr>
+	</tbody>
+</table>
+
+<script type="text/javascript" src="/assets/js/workers/admin/reports.js"></script>
