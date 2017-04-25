@@ -16,6 +16,14 @@ You can access webforms in browser, by address:
 
 	http://127.0.0.1:9090/
 
+## Admin site access
+
+By default the is only one user - super. Only he can create new users. Current parameters to log in
+
+	```super:1234567```
+
+*You are able and I reccomend you to change password of super user simultaneously after setup of the project
+
 ## Pages
 
 	/report/main               Page to create a report
