@@ -7,6 +7,7 @@ This is not very good clone of [Google Forms](https://docs.google.com/forms/d/e/
  - Run webforms.ecf in EiffelStudio later than 17.1.
  - Give it a moment to compile.
  - Run application.
+ - .. Or you can run precompiled webforms.exe
  - NOTE: application wouldn't work if it is not in the same folder as folder 'stuff/' does
  - P.S. I don't know, does it require installed SQLite on your PC. So if application doesn't work it can be one of the reasons, why
 

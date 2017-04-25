@@ -454,4 +454,63 @@ feature
 			end
 		end
 
+	handle_pass_change (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE [ANY, STRING]
+			data: HASH_TABLE [ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+			db_data: ARRAY [ARRAY [STRING]]
+			crypt: SHA256
+		do
+			create resp.make (2)
+
+			if attached sess.get (req, res) as sess_name then
+				data := convertPostData (req)
+				create sql_params.make (3)
+
+				create crypt.make
+
+				if attached data ["old_pass"] as old_p and then attached data ["new_pass"] as new_p and then attached data ["new_pass_2"] as new_p_2 then
+					crypt.update_from_string ("salty" + old_p.out + "sugar")
+					sql_params ["u_name"] := sess_name.out
+					sql_params ["old_pass"] := crypt.digest_as_string
+
+					if db.select_all (db.query_escape ("SELECT * FROM admins WHERE name = {{u_name}} AND password = {{old_pass}}", sql_params)).count = 0 then
+						resp ["status"] := "error"
+						resp ["msg"] := "Invalid old password"
+
+						output (res, renderJson (resp))
+					elseif new_p.out.count < 7 then
+						resp ["status"] := "error"
+						resp ["msg"] := "New password is too short"
+
+						output (res, renderJson (resp))
+					elseif NOT new_p.out.same_string(new_p_2.out) then
+						resp ["status"] := "error"
+						resp ["msg"] := "Passwords don't match"
+
+						output (res, renderJson (resp))
+					else
+						crypt.reset
+						crypt.update_from_string ("salty" + new_p.out + "sugar")
+						sql_params["new_pass"] := crypt.digest_as_string
+
+						db.just_modify (db.query_escape ("UPDATE admins SET password = {{new_pass}} WHERE name = {{u_name}}", sql_params))
+
+						resp ["status"] := "success"
+						resp ["msg"] := "Password successfully changed"
+						output (res, renderJson (resp))
+					end
+				else
+					resp ["status"] := "error"
+					resp ["msg"] := "All fields must be filled"
+					output (res, renderJson (resp))
+				end
+			else
+				resp ["status"] := "error"
+				resp ["msg"] := "Access error. Try to relogin"
+				output (res, renderJson (resp))
+			end
+		end
+
 end
