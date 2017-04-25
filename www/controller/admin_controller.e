@@ -34,13 +34,22 @@ feature
 			table: HASH_TABLE[STRING, STRING]
 		do
 			if attached sess.get (req, res) as u_name then
-				create table.make (1)
-				table["user_name"] := u_name.out
-
-				if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
-					output (res, renderHtml (page.string_representation, table))
+				if req.path_info.same_string ("/admin/add_user") AND NOT u_name.out.same_string ("super") then
+					res.redirect_now ("/admin/index")
 				else
-					output404 (req, res)
+					create table.make (2)
+					table["user_name"] := u_name.out
+					if u_name.out.same_string ("super") then
+						table["create_user"] := "<li><a href='/admin/add_user'>Add admin</a></li>"
+					else
+						table["create_user"] := ""
+					end
+
+					if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
+						output (res, renderHtml (page.string_representation, table))
+					else
+						output404 (req, res)
+					end
 				end
 			else
 				res.redirect_now ("/admin/login")
