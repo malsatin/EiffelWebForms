@@ -6,11 +6,15 @@ $(function() {
 			if(data.status == 'success') {
 				$('.select-unit').empty();
 
-				for(var i = 0; i < data.msg.length; i++) {
-					$('.select-unit').append('<option value="' + data.msg[i][0] + '">' + ucfirst(escape(data.msg[i][0])) + '</option>')
-				}
+				if(data.msg.length > 0) {
+					for(var i = 0; i < data.msg.length; i++) {
+						$('.select-unit').append('<option value="' + data.msg[i][0] + '">' + ucfirst(escape(data.msg[i][0])) + '</option>')
+					}
 
-				$('.search-btn, .select-unit').prop('disabled', false);
+					$('.search-btn, .select-unit').prop('disabled', false);
+				} else {
+					generate('warning', 'Can\'t find any unit');
+				}
 			} else {
 				generate(data.status, data.msg);
 			}

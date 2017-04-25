@@ -10,7 +10,7 @@ This is not very good clone of [Google Forms](https://docs.google.com/forms/d/e/
  - ..
  - Or just run webforms.exe in the project root folder
  - NOTE: application wouldn't work if it is not in the same folder as folder 'stuff/' does
- - P.S. I don't know, does it require installed SQLite on your PC. So if application doesn't work it can be one of the reasins, why
+ - P.S. I don't know, does it require installed SQLite on your PC. So if application doesn't work it can be one of the reasons, why
 
 ## Access
 
@@ -21,7 +21,7 @@ You can access webforms in browser, by address:
 ## Pages
 
 	/report/main               Page to create a report
-	/admin/index               Admin site. There you can perform some queries
+	/admin/login               Admin site. Firstly you have to login. There you can perform some queries
 
 ## Authors
  
