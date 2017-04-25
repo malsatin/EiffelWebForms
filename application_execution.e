@@ -80,7 +80,6 @@ feature {NONE}
 			map_uri_agent ("/api/res-collab-number", agent c_api.handle_res_collab_number, router.methods_get_post);
 			map_uri_agent ("/api/students-reports", agent c_api.handle_students_reports, router.methods_get_post);
 			map_uri_agent ("/api/unit-patents", agent c_api.handle_unit_patents, router.methods_get_post);
-
 			map_uri_agent ("/api/user-login", agent c_api.handle_user_login, router.methods_get_post);
 			map_uri_agent ("/api/create-user", agent c_api.handle_create_user, router.methods_get_post);
 		end

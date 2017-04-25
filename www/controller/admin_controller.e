@@ -30,15 +30,19 @@ feature
 	-- Handlers
 
 	handle_page (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			table: STRING
 		do
 			if sess.is_logged_in (req) then
-				Io.put_string ("123")
-			end
-			
-			if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
-				output (res, renderHtml (page.string_representation, Void))
+				res.redirect_now ("/admin/login")
 			else
-				output404 (req, res)
+				table := sess.get (req)
+
+				if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
+					output (res, renderHtml (page.string_representation, table).replace_substring_all ("{{user_name}}", table))
+				else
+					output404 (req, res)
+				end
 			end
 		end
 

@@ -289,9 +289,9 @@ feature
 			crypt: SHA256
 		do
 			if sess.is_logged_in(req) then
-				res.redirect_now ("/admin/index")
+				res.redirect_now ("/admin/login")
 			else
-				create resp.make (2)
+				create resp.make (3)
 				data := convertPostData (req)
 				create sql_params.make (2)
 
@@ -299,14 +299,16 @@ feature
 
 				if attached data ["login"] as login and then attached data ["pass"] as pass then
 					sql_params["login"] := login.out
-					crypt.update_from_string ("salty" + pass.out + login.out + "sugar")
+					crypt.update_from_string ("salty" + pass.out + "sugar")
 					sql_params["pass_hash"] := crypt.digest_as_string
 
-					db_data := db.select_all (db.query_escape ("SELECT * FROM admins WHERE name = {{login}} AND password = {{pass_hash}}", sql_params))
+					db_data := db.select_all (db.query_escape ("SELECT id FROM admins WHERE name = {{login}} AND password = {{pass_hash}}", sql_params))
 
 					if db_data.count > 0 then
 						resp ["status"] := "success"
-						resp ["msg"] := "Fuck yeah"
+						resp ["msg"] := "Successfull login"
+						resp ["ssid"] := sess.start(login.out)
+
 						output (res, renderJson (resp))
 					else
 						resp ["status"] := "error"
@@ -359,7 +361,7 @@ feature
 
 					output (res, renderJson (resp))
 				else
-					crypt.update_from_string ("salty" + pass.out + login.out + "sugar")
+					crypt.update_from_string ("salty" + pass.out + "sugar")
 					sql_params["pass_hash"] := crypt.digest_as_string
 
 					user_id := db.insert (db.query_escape ("INSERT INTO admins (name, password, created) VALUES({{login}}, {{pass_hash}}, datetime('now', 'localtime'))", sql_params))

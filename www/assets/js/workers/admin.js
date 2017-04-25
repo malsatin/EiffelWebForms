@@ -27,4 +27,8 @@ $(function() {
 		$(this).siblings('input[type="text"]').attr('type', 'password');
 	});
 
+	if(Cookies.has('sess_id')) {
+		Cookies.set('sess_id', Cookies.get('sess_id'), {path: '/', expires: 1/12});
+	}
+
 })

@@ -77,12 +77,36 @@ feature
 feature
 	-- Public
 
-	get(req: WSF_REQUEST): detachable HASH_TABLE[ANY, HASHABLE]
+	start(name: STRING): STRING
+		local
+			rand: V_RANDOM
+			crypt: MD5
+			sid: STRING
+		do
+			create rand.default_create
+			create crypt.make
+
+			from
+				crypt.update_from_string (name + rand.long_item.out)
+				sid := crypt.digest_as_string
+			until
+				db.select_all ("SELECT * FROM sessions WHERE id = '" + sid + "'").count = 0
+			loop
+				crypt.update_from_string (name + rand.long_item.out)
+				sid := crypt.digest_as_string
+			end
+
+			db.just_insert ("INSERT INTO sessions (id, data, update_time) VALUES('" + sid + "', '" + name + "', datetime('now', 'localtime'))")
+
+			Result := sid
+		end
+
+	get(req: WSF_REQUEST): STRING
 		local
 			params: HASH_TABLE[STRING, STRING]
 			data: ARRAY[ARRAY[STRING]]
 		do
-			Result := Void
+			Result := ""
 
 			create params.make (1)
 
@@ -92,7 +116,7 @@ feature
 				data := db.select_all (db.query_escape ("SELECT * FROM sessions WHERE id = {{sess_id}}", params))
 
 				if data.count > 0 then
-					Result := json.decode(data.at (1).at (1))
+					Result := data.at (1).at (1)
 				else
 				end
 			end
