@@ -8,10 +8,11 @@ class
 	ADMIN_CONTROLLER
 
 inherit
+
 	DEFAULT_CONTROLLER
-	redefine
-		initialize
-	end
+		redefine
+			initialize
+		end
 
 create
 	make
@@ -31,9 +32,9 @@ feature
 	handle_page (req: WSF_REQUEST; res: WSF_RESPONSE)
 		do
 			if attached {WSF_STRING} req.path_parameter ("page") AS page and then not page.is_empty then
-				output(res, renderHtml(page.string_representation, Void))
+				output (res, renderHtml (page.string_representation, Void))
 			else
-				output404(req, res)
+				output404 (req, res)
 			end
 		end
 
@@ -43,9 +44,7 @@ feature
 		do
 			defaultLayout := layout
 			layout := "report"
-
-			output(res, renderHtml("login", Void))
-
+			output (res, renderHtml ("login", Void))
 			layout := defaultLayout
 		end
 

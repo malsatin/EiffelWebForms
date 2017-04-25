@@ -48,7 +48,15 @@ feature
 			data := convertPostData (req)
 			create sql_params.make (10)
 			create tmp.make_empty
-			if attached data ["unit_name"] as unit_name and then attached data ["unit_head"] as unit_head and then attached data ["courses"] as courses and then attached data ["examinations"] as examinations and then attached data ["students_supervised"] as students_supervised and then attached data ["students_reports"] as students_reports and then attached data ["grants"] as grants and then attached data ["projects"] as projects then
+			if attached data ["unit_name"] as unit_name and
+				then attached data ["unit_head"] as unit_head and
+				then attached data ["courses"] as courses and
+				then attached data ["examinations"] as examinations and
+				then attached data ["students_supervised"] as students_supervised and
+				then attached data ["students_reports"] as students_reports and
+				then attached data ["grants"] as grants and
+				then attached data ["projects"] as projects
+			then
 				tmp := unit_name.out
 				tmp.to_lower
 				sql_params ["unit_name"] := tmp
@@ -180,7 +188,7 @@ feature
 				output (res, renderJson (resp))
 			else
 				resp ["status"] := "error"
-				resp ["msg"] := "All field must be filled"
+				resp ["msg"] := "All fields must be filled"
 				output (res, renderJson (resp))
 			end
 		end
@@ -188,7 +196,6 @@ feature
 	handle_basic_info (req: WSF_REQUEST; res: WSF_RESPONSE)
 		local
 			resp: HASH_TABLE [ANY, STRING]
-			db_data: ARRAY [ARRAY [STRING]]
 		do
 			create resp.make (4)
 			resp ["status"] := "success"
@@ -241,7 +248,7 @@ feature
 				output (res, renderJson (resp))
 			else
 				resp ["status"] := "error"
-				resp ["msg"] := "Year field is not filled"
+				resp ["msg"] := "Year fields is not filled"
 				output (res, renderJson (resp))
 			end
 		end
@@ -268,7 +275,67 @@ feature
 				output (res, renderJson (resp))
 			else
 				resp ["status"] := "error"
-				resp ["msg"] := "All field must be filled"
+				resp ["msg"] := "All fields must be filled"
+				output (res, renderJson (resp))
+			end
+		end
+
+	handle_create_user (req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			resp: HASH_TABLE [ANY, STRING]
+			data: HASH_TABLE [ANY, STRING]
+			sql_params: HASH_TABLE [ANY, STRING]
+			crypt: SHA256
+			user_id: INTEGER
+		do
+			create resp.make (2)
+			data := convertPostData (req)
+			create sql_params.make (3)
+
+			create crypt.make
+
+			if attached data ["login"] as login and then attached data ["pass"] as pass and then attached data ["pass_2"] as pass_2 then
+				sql_params["login"] := login.out
+
+				if login.out.is_empty OR pass.out.is_empty then
+					resp ["status"] := "error"
+					resp ["msg"] := "You have empty fields"
+
+					output (res, renderJson (resp))
+				elseif login.out.count < 5 OR pass.out.count < 7 then
+					resp ["status"] := "error"
+					resp ["msg"] := "Login or password is too short"
+
+					output (res, renderJson (resp))
+				elseif NOT pass.out.same_string(pass_2.out) then
+					resp ["status"] := "error"
+					resp ["msg"] := "Passwords don't match"
+
+					output (res, renderJson (resp))
+				elseif db.select_all (db.query_escape ("SELECT * FROM admins WHERE name = {{login}}", sql_params)).count > 0 then
+					resp ["status"] := "error"
+					resp ["msg"] := "User already exists"
+
+					output (res, renderJson (resp))
+				else
+					crypt.update_from_string ("salty" + pass.out + login.out + "sugar")
+					sql_params["pass_hash"] := crypt.digest_as_string
+
+					user_id := db.insert (db.query_escape ("INSERT INTO admins (name, password, created) VALUES({{login}}, {{pass_hash}}, datetime('now', 'localtime'))", sql_params))
+
+					if user_id > 0 then
+						resp ["status"] := "success"
+						resp ["msg"] := "User has been created"
+					else
+						resp ["status"] := "error"
+						resp ["msg"] := "Error in DB"
+					end
+
+					output (res, renderJson (resp))
+				end
+			else
+				resp ["status"] := "error"
+				resp ["msg"] := "All fields must be filled"
 				output (res, renderJson (resp))
 			end
 		end

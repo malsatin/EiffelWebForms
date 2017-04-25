@@ -1,22 +1,22 @@
 <h1 align="center" class="page_title">Add new admin</h1>
 <hr/>
 
-<form class="clearfix">
+<form class="clearfix user-create">
 	<div class="form-group col-md-6">
 		<h4>Login</h4>
-		<input class="form-control" name="u_login" placeholder="User login">
+		<input class="form-control" name="login" placeholder="User login">
 	</div>
 	<div class="form-group col-md-6">
 		<h4>Password</h4>
 		<div class="input-group">
-			<input class="form-control" type="password" name="u_pass" placeholder="User pass">
+			<input class="form-control" type="password" name="pass" placeholder="User pass">
 			<div class="input-group-addon show_pass">
 				<span class="glyphicon glyphicon glyphicon-eye-open"></span>
 			</div>
 		</div>
 		<br>
 		<div class="input-group">
-			<input class="form-control" type="password" name="u_pass" placeholder="Repeat user pass">
+			<input class="form-control" type="password" name="pass_2" placeholder="Repeat user pass">
 			<div class="input-group-addon show_pass">
 				<span class="glyphicon glyphicon glyphicon-eye-open"></span>
 			</div>
@@ -27,3 +27,5 @@
 		<button type="button" class="btn btn-primary btn-default confirm-btn col-md-2 pull-right">Create</button>
 	</div>
 </form>
+
+<script type="text/javascript" src="/assets/js/workers/admin/add_user.js"></script>

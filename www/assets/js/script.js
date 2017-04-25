@@ -6,7 +6,7 @@ function generate(type, message, options) {
 		type        : type,
 		dismissQueue: true,
 		timeout     : 10000,
-		closeWith   : ['click', 'button'],
+		closeWith   : ['click'/*, 'button'*/],
 		layout      : 'topRight',
 		theme       : 'bootstrapTheme',
 		/*progressBar : true, // Works only in 2.4.0+*/
