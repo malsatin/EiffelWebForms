@@ -200,8 +200,8 @@ feature
 			create resp.make (4)
 			resp ["status"] := "success"
 			resp ["msg"] := "Executed without errors"
-			resp ["r_num"] := db.select_row ("SELECT COUNT(*) FROM reports")
-			resp ["a_num"] := db.select_row ("SELECT COUNT(*) FROM admins")
+			resp ["r_num"] := db.select_scalar ("SELECT COUNT(*) FROM reports")
+			resp ["a_num"] := db.select_scalar ("SELECT COUNT(*) FROM admins")
 			output (res, renderJson (resp))
 		end
 
@@ -288,7 +288,7 @@ feature
 			sql_params: HASH_TABLE [ANY, STRING]
 			crypt: SHA256
 		do
-			if sess.is_logged_in(req) then
+			if sess.is_logged_in(req, res) then
 				res.redirect_now ("/admin/login")
 			else
 				create resp.make (3)
@@ -302,11 +302,12 @@ feature
 					crypt.update_from_string ("salty" + pass.out + "sugar")
 					sql_params["pass_hash"] := crypt.digest_as_string
 
-					db_data := db.select_all (db.query_escape ("SELECT id FROM admins WHERE name = {{login}} AND password = {{pass_hash}}", sql_params))
+					db_data := db.select_all (db.query_escape ("SELECT id, name FROM admins WHERE name = {{login}} AND password = {{pass_hash}}", sql_params))
 
 					if db_data.count > 0 then
 						resp ["status"] := "success"
 						resp ["msg"] := "Successfull login"
+
 						resp ["ssid"] := sess.start(login.out)
 
 						output (res, renderJson (resp))

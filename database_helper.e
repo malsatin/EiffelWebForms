@@ -87,7 +87,7 @@ feature
 				until
 					i > item.count
 				loop
-					row_data.force (item.string_value (i), (i - 1).as_integer_32)
+					row_data.force (item.string_value (i), i.as_integer_32)
 						--Io.put_string (i.out + ": " + item.column_name (i).out+ " -> " + item.string_value(i) + "%N")
 
 					i := i + 1
@@ -131,6 +131,13 @@ feature
 			create db_modify_statement.make (prepare_sql (sql), Current)
 			db_modify_statement.execute
 			Result := db_modify_statement.changes_count.as_integer_32
+		end
+
+	just_modify (sql: STRING)
+		local
+			tmp: INTEGER
+		do
+			tmp := modify(sql)
 		end
 
 end

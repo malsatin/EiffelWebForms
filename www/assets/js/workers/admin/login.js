@@ -1,6 +1,8 @@
 $(function() {
 
-	$('.login-btn').on('click', function() {
+	$('.login-form').on('submit', function(e) {
+		e.preventDefault();
+
 		var fd = $('.login-form').serializeArray();
 
 		$.ajax({

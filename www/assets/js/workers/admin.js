@@ -27,7 +27,13 @@ $(function() {
 		$(this).siblings('input[type="text"]').attr('type', 'password');
 	});
 
-	if(Cookies.has('sess_id')) {
+	if(Cookies.get('sess_id') == '__remove__') {
+		console.log("deleting cookie");
+		Cookies.remove('sess_id');
+	}
+
+	if(typeof Cookies.get('sess_id') != 'undefined') {
+		console.log("expanding cookie");
 		Cookies.set('sess_id', Cookies.get('sess_id'), {path: '/', expires: 1/12});
 	}
 

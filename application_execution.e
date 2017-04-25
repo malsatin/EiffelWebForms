@@ -67,6 +67,7 @@ feature {NONE}
 			map_uri_template_agent ("/report/section/{number}", agent c_report.handle_section, router.methods_GET);
 
 			map_uri_agent ("/admin/login", agent c_admin.handle_login, router.methods_GET);
+			map_uri_agent ("/admin/logout", agent c_admin.handle_logout, router.methods_GET);
 			map_uri_template_agent ("/admin/{page}", agent c_admin.handle_page, router.methods_GET);
 
 				-- API routes

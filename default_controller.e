@@ -129,7 +129,7 @@ feature
 feature
 	-- Features
 
-	renderHtml(path: STRING; opts: detachable HASH_TABLE[ANY, HASHABLE]): STRING
+	renderHtml(path: STRING; opts: detachable HASH_TABLE[STRING, STRING]): STRING
 		require
 			path_not_void: path /= Void
 		local
@@ -142,6 +142,14 @@ feature
 			Result := layout_html
 
 			Result.replace_substring_all ("{{insert_content}}", content_html)
+
+			if attached opts as params then
+				across
+					params as param
+				loop
+					Result.replace_substring_all ("{{" + param.key + "}}", param.item)
+				end
+			end
 		end
 
 	renderJson(data: HASH_TABLE[ANY, HASHABLE]): STRING

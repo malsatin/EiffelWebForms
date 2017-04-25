@@ -26,8 +26,8 @@ $(function() {
 		success: function(data) {
 			if(data.status == 'success') {
 
-				$('.admins_number').html(Number(data.a_num[0]));
-				$('.reports_number').html(Number(data.r_num[0]));
+				$('.admins_number').html(Number(data.a_num));
+				$('.reports_number').html(Number(data.r_num));
 			} else {
 				generate(data.status, data.msg);
 			}

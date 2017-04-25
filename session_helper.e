@@ -29,9 +29,11 @@ feature
 
 	check_db
 		local
-			tmp: INTEGER
+			removed_count: INTEGER
 		do
-			tmp := db.modify ("DELETE FROM sessions WHERE update_time < datetime('now', '-2 hours')")
+			removed_count := db.modify ("DELETE FROM sessions WHERE update_time < datetime('now', 'localtime', '-2 hour')")
+			Io.put_string ("Cleaned " + removed_count.out + " sessions rows")
+			Io.new_line
 		end
 
 	extend_current(req: WSF_REQUEST; res: WSF_RESPONSE)
@@ -41,12 +43,11 @@ feature
 			cookie: WSF_COOKIE
 			datet: DATE_TIME
 			dtd: DATE_TIME_DURATION
-			tmp: INTEGER
 		do
 			create params.make (1)
 
 			if attached req.cookie ("sess_id") as sess_id then
-				params["sess_id"] := sess_id.out
+				params["sess_id"] := sess_id.as_string.string_representation
 
 				data := db.select_all (db.query_escape ("SELECT * FROM sessions WHERE id = {{sess_id}}", params))
 
@@ -55,17 +56,20 @@ feature
 					create dtd.make(0, 0, 0, 2, 0, 0)
 					datet.add (dtd)
 
-					create cookie.make ("sess_id", sess_id.out)
+					create cookie.make ("sess_id", sess_id.as_string.string_representation)
 					cookie.set_path ("/")
 					cookie.set_expiration_date(datet)
 
-					tmp := db.modify (db.query_escape ("UPDATE sessions SET update_time = datetime('now', 'localtime') WHERE id = {{sess_id}}", params))
+					db.just_modify (db.query_escape ("UPDATE sessions SET update_time = datetime('now', 'localtime') WHERE id = {{sess_id}}", params))
 				else
+					Io.put_string ("Removing current session")
+					Io.new_line
+
 					create datet.make_now
-					create dtd.make(0, 0, 0, -2, 0, 0)
+					create dtd.make(-1, 0, 0, 0, 0, 0)
 					datet.add (dtd)
 
-					create cookie.make ("sess_id", sess_id.out)
+					create cookie.make ("sess_id", "__remove__")
 					cookie.set_path ("/")
 					cookie.set_expiration_date(datet)
 				end
@@ -86,6 +90,8 @@ feature
 			create rand.default_create
 			create crypt.make
 
+			check_db
+
 			from
 				crypt.update_from_string (name + rand.long_item.out)
 				sid := crypt.digest_as_string
@@ -101,28 +107,57 @@ feature
 			Result := sid
 		end
 
-	get(req: WSF_REQUEST): STRING
+	get(req: WSF_REQUEST; res: WSF_RESPONSE): detachable STRING
 		local
 			params: HASH_TABLE[STRING, STRING]
 			data: ARRAY[ARRAY[STRING]]
 		do
-			Result := ""
-
-			create params.make (1)
+			Result := Void
+			check_db
 
 			if attached req.cookie ("sess_id") as sess_id then
-				params["sess_id"] := sess_id.out
+				extend_current (req, res)
 
-				data := db.select_all (db.query_escape ("SELECT * FROM sessions WHERE id = {{sess_id}}", params))
+				create params.make (1)
+				params["sess_id"] := sess_id.as_string.string_representation
+
+				data := db.select_all (db.query_escape ("SELECT data FROM sessions WHERE id = {{sess_id}}", params))
 
 				if data.count > 0 then
+					extend_current (req, res)
+
 					Result := data.at (1).at (1)
-				else
 				end
 			end
 		end
 
-	is_logged_in(req: WSF_REQUEST): BOOLEAN
+	destroy(req: WSF_REQUEST; res: WSF_RESPONSE)
+		local
+			params: HASH_TABLE[STRING, STRING]
+			datet: DATE_TIME
+			dtd: DATE_TIME_DURATION
+			cookie: WSF_COOKIE
+		do
+			check_db
+
+			if attached req.cookie ("sess_id") as sess_id then
+				create params.make (1)
+				params["sess_id"] := sess_id.as_string.string_representation
+
+				db.just_modify (db.query_escape ("DELETE FROM sessions WHERE id = {{sess_id}}", params))
+
+				create datet.make_now
+				create dtd.make(0, 0, 0, -2, 0, 0)
+				datet.add (dtd)
+
+				create cookie.make ("sess_id", "")
+				cookie.set_path ("/")
+				cookie.set_expiration_date(datet)
+			end
+		end
+
+
+	is_logged_in(req: WSF_REQUEST; res: WSF_RESPONSE): BOOLEAN
 		local
 			params: HASH_TABLE[STRING, STRING]
 		do
@@ -132,10 +167,12 @@ feature
 			create params.make (1)
 
 			if attached req.cookie ("sess_id") as sess_id then
-				params["sess_id"] := sess_id.out
+				params["sess_id"] := sess_id.as_string.string_representation
 
 				Io.put_string (db.query_escape ("SELECT * FROM sessions WHERE id = {{sess_id}}", params))
 				if db.select_all (db.query_escape ("SELECT * FROM sessions WHERE id = {{sess_id}}", params)).count > 0 then
+					extend_current (req, res)
+
 					Result := true
 				end
 			end

@@ -19,7 +19,7 @@ You can access webforms in browser, by address:
 ## Pages
 
 	/report/main               Page to create a report
-	/admin/index               Admin site. There you can perform some queries
+	/admin/login               Admin site. Firstly you have to log in. There you can perform some queries
 
 ## Authors
  
