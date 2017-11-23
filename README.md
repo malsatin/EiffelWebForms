@@ -34,4 +34,3 @@ By default the is only one user - super. Only he can create new users. Current p
  
  - Malyutkin Sergey
  - Ansenina Anna
- - Bogdan Parkhomin
